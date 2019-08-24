@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
                                     MainActivity.this.center = center;
                                     EstquidoCBLService.fetchSpots(center, map -> {
                                         MainActivity.this.spots = map;
-                                        String[] countries = map.keySet().toArray(new String[0]);
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, countries);
+                                        String[] array = map.keySet().toArray(new String[0]);
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, array);
                                         tv_destinationName.setAdapter(adapter);
                                     });
                                 });
@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
             Map<String, Object> map = (Map<String, Object>) spots.get(destination);
             building = (String) map.get("building");
             Long floor = (Long) map.get("floor");
-            EstquidoCBLService.fetchBuildings(center, building, new EstquidoCBLService.OnBuildingsFetchedCallback() {
+            EstquidoCBLService.fetchBuilding(center, building, new EstquidoCBLService.OnBuildingsFetchedCallback() {
                 @Override
-                public void onBuildingsFetched(Map<String, Object> map) {
+                public void onBuildingFetched(Map<String, Object> map) {
                     Log.i("INFO", map.toString());
                     ArrayList<Double> location = (ArrayList<Double>) map.get("location");
                     mGoogleMapsIntentURI = Uri.parse("geo:0,0?q=" + location.get(0)+", "+location.get(1));

@@ -6,16 +6,10 @@ import android.util.Log;
 import com.couchbase.lite.AbstractReplicator;
 import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.DataSource;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseConfiguration;
-import com.couchbase.lite.Expression;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryBuilder;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorConfiguration;
-import com.couchbase.lite.ResultSet;
-import com.couchbase.lite.SelectResult;
 import com.couchbase.lite.URLEndpoint;
 import com.infy.estquido.app.This;
 
@@ -32,20 +26,20 @@ import java.util.stream.Stream;
 public class EstquidoCBLService {
 
 
-    private static interface OnFetchCompletedCallback {
-        public void onFetchCompleted(Map<String, Map<String, Object>> documents);
+    private interface OnFetchCompletedCallback {
+        void onFetchCompleted(Map<String, Map<String, Object>> documents);
     }
 
-    public static interface OnCenterInferredCallback {
-        public void onCenterInferred(String center);
+    public interface OnCenterInferredCallback {
+        void onCenterInferred(String center);
     }
 
-    public static interface OnSpotsFetchedCallback {
-        public void onSpotsFetched(Map<String, Object> map);
+    public interface OnSpotsFetchedCallback {
+        void onSpotsFetched(Map<String, Object> map);
     }
 
-    public static interface OnBuildingsFetchedCallback {
-        public void onBuildingsFetched(Map<String, Object> map);
+    public interface OnBuildingsFetchedCallback {
+        void onBuildingFetched(Map<String, Object> map);
     }
 
 
@@ -127,11 +121,11 @@ public class EstquidoCBLService {
         }, "spots_" + center);
     }
 
-    public static void fetchBuildings(String center, String building, OnBuildingsFetchedCallback callback) {
+    public static void fetchBuilding(String center, String building, OnBuildingsFetchedCallback callback) {
         new EstquidoCBLService().fetch(documents -> {
             Map<String, Object> map = documents.get("building_" + center + "_" + building);
             Log.i(TAG, "BUILDING: " + map.toString());
-            callback.onBuildingsFetched(map);
+            callback.onBuildingFetched(map);
         }, "building_" + center + "_" + building);
     }
 }
