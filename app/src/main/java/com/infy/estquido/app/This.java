@@ -13,6 +13,7 @@ public class This {
     public static final AtomicReference<Context> CONTEXT = new AtomicReference<>();
     public static final AtomicReference<Application> APPLICATION = new AtomicReference<>();
     public static final AtomicReference<MainActivity> MAIN_ACTIVITY = new AtomicReference<>();
+    public static final AtomicReference<MainActivity> LOCATION = new AtomicReference<>();
 
 
     public static class Static {
