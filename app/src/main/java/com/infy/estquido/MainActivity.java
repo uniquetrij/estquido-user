@@ -3,6 +3,7 @@ package com.infy.estquido;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Map<String, Object> spots;
     private String building;
     private String destination;
+    private Location location;
 
 
     @Override
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 mFusedLocationClient.getLastLocation()
                         .addOnSuccessListener(MainActivity.this, location -> {
                             if (location != null) {
+                                MainActivity.this.location = location;
                                 EstquidoCBLService.inferCenter(location, center -> {
                                     MainActivity.this.center = center;
                                     EstquidoCBLService.fetchSpots(center, map -> {
@@ -94,5 +97,13 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    public void startIndoorNav(View view) {
+        Intent intent = new Intent(MainActivity.this, NavigateActivity.class);
+        intent.putExtra("center", center);
+        intent.putExtra("location", location);
+        intent.putExtra("building", building);
+        startActivity(intent);
     }
 }

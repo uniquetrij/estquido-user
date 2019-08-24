@@ -47,9 +47,10 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:15.0.1'
 
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+
 
 }
-
 
 
 sceneform.asset('sampledata/arrow.fbx',

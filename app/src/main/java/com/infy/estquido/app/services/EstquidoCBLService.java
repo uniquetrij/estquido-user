@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 public class EstquidoCBLService {
 
 
+
+
     private interface OnFetchCompletedCallback {
         void onFetchCompleted(Map<String, Map<String, Object>> documents);
     }
@@ -86,6 +88,34 @@ public class EstquidoCBLService {
         replicator.start();
     }
 
+    public void update(OnFetchCompletedCallback callback, String... documents) {
+        Map<String, Map<String, Object>> map = new HashMap<>();
+        reConfig.setReplicatorType(ReplicatorConfiguration.ReplicatorType.PUSH);
+        reConfig.setDocumentIDs(Arrays.asList(documents));
+        Replicator replicator = new Replicator(reConfig);
+        replicator.addChangeListener(change -> {
+            if (change.getStatus().getError() != null) {
+                Log.e(TAG, "FETCH_ERROR " + change.getStatus().getError());
+            }
+            if (change.getStatus().getActivityLevel().equals(AbstractReplicator.ActivityLevel.STOPPED)) {
+                Stream.of(documents).forEach(d -> {
+                    try {
+                        map.put(d, database.getDocument(d).toMap());
+                    } catch (Exception e) {
+
+                    }
+                });
+                Log.i(TAG, "FETCH_COMPLETED " + map.toString());
+                callback.onFetchCompleted(map);
+            }
+        });
+        replicator.start();
+    }
+
+    public static Database getDatabase() {
+        return database;
+    }
+
     public static void inferCenter(Location location, OnCenterInferredCallback callback) {
         new EstquidoCBLService().fetch(documents -> {
             Map<String, Object> map = documents.get("centers");
@@ -125,6 +155,14 @@ public class EstquidoCBLService {
         new EstquidoCBLService().fetch(documents -> {
             Map<String, Object> map = documents.get("building_" + center + "_" + building);
             Log.i(TAG, "BUILDING: " + map.toString());
+            callback.onBuildingFetched(map);
+        }, "building_" + center + "_" + building);
+    }
+
+    public static void updateBuilding(String center, String building, OnBuildingsFetchedCallback callback) {
+        new EstquidoCBLService().update(documents -> {
+            Map<String, Object> map = documents.get("building_" + center + "_" + building);
+            Log.i(TAG, "BUILDING: " + map);
             callback.onBuildingFetched(map);
         }, "building_" + center + "_" + building);
     }
