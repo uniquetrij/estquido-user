@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Estquido</string>
     <string name="title_activity_sync">SyncActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_outdoor">Map</string>
+    <string name="title_location_permission">Location</string>
 </resources>

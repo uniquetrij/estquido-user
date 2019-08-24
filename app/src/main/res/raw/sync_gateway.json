@@ -1,0 +1,22 @@
+{
+  "log": ["*"],
+  "databases": {
+    "estquido": {
+      "server": "http://0.0.0.0:8091",
+      "bucket": "estquido",
+      "username": "estquido",
+      "password": "estquido",
+      "enable_shared_bucket_access": true, 
+      "import_docs": "continuous",
+      "num_index_replicas": 0, 
+      "users": {
+        "GUEST": { "disabled": false, "admin_channels": ["*"] }
+      },
+      "sync": `function (doc, oldDoc) {
+        if (doc.sdk) {
+          channel(doc.sdk);
+        }
+      }`
+    }
+  }
+}
