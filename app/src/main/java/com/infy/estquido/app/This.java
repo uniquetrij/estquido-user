@@ -1,7 +1,12 @@
 package com.infy.estquido.app;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.infy.estquido.MainActivity;
 
@@ -14,11 +19,12 @@ public class This {
     public static final AtomicReference<Application> APPLICATION = new AtomicReference<>();
     public static final AtomicReference<MainActivity> MAIN_ACTIVITY = new AtomicReference<>();
 
-
     public static class Static {
         public static final String COUCHBASE_URL = "ws://192.168.1.101:4984/estquido";
         public static final String COUCHBASE_DB = "estquido";
         public static final String COUCHBASE_USER = "estquido";
         public static final String COUCHBASE_PASS = "estquido";
     }
+
+
 }
