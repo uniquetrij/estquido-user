@@ -1,8 +1,17 @@
 package com.infy.estquido.app.services;
 
 import android.location.Location;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.couchbase.lite.AbstractReplicator;
 import com.couchbase.lite.BasicAuthenticator;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -11,7 +20,10 @@ import com.couchbase.lite.DatabaseConfiguration;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorConfiguration;
 import com.couchbase.lite.URLEndpoint;
+import com.infy.estquido.app.NetworkRequest;
 import com.infy.estquido.app.This;
+import com.infy.estquido.app.model.GeoSpatialRequest;
+import com.infy.estquido.app.model.Query;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,8 +37,8 @@ import java.util.stream.Stream;
 
 public class EstquidoCBLService {
 
-
-
+    public static final String
+            inferCenterUrl = "http://192.168.43.213:8094/api/index/centre-name/query";
 
     private interface OnFetchCompletedCallback {
         void onFetchCompleted(Map<String, Map<String, Object>> documents);
@@ -43,7 +55,6 @@ public class EstquidoCBLService {
     public interface OnBuildingsFetchedCallback {
         void onBuildingFetched(Map<String, Object> map);
     }
-
 
     private static final String TAG = EstquidoCBLService.class.getName();
 
